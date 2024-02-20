@@ -3,7 +3,15 @@ from numpy.linalg import inv
 from numpy.linalg import det
 from numpy.linalg import matrix_rank
 
+from sklearn.metrics import mean_squared_error
+
 import matplotlib.pyplot as plt
+
+def paddingOfOnes(X):
+    # X: np.array of m x d matrix, m sample, d features, no bias
+    # return: np.array of m x (d+1) matrix, m sample, d+1 features, with bias
+    
+    return np.hstack((np.ones((X.shape[0], 1)), X))
 
 
 def linearRegressionWithoutBias(X, Y, printResult=False, printFeature=None):
@@ -24,7 +32,9 @@ def linearRegressionWithoutBias(X, Y, printResult=False, printFeature=None):
 
     if printResult:
         print("rank(X) = ", matrix_rank(X.T @ X))
-        print("W = ", W)
+        print("W =\n", W)
+        MSE = mean_squared_error(X @ W,Y)
+        print("MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
@@ -41,21 +51,16 @@ def linearRegressionWithoutBias(X, Y, printResult=False, printFeature=None):
 
     return W
 
-X = np.array([[3], [4], [10], [6], [7]])
-Y = np.array([[0, 5], [1.5, 4], [-3, 8], [-4, 10], [1, 6]])
-w = linearRegressionWithoutBias(X, Y, printResult=False, printFeature=0)
-print(w)
-
 def linearRegressionWithBias(X, Y, printResult=False, printFeature=None):
     # X: np.array of m x d matrix, m sample, d features, no bias
     # Y: np.array of m x h vector, m sample, h output
     # printResult: boolean, print the result of rank(X.T @ X) and w or not
-    # printGraph: None or column of x (feature to plot), plot the graph of X and Y, and the regression line or not
+    # printGraph: None or column of x (feature to plot with bias), plot the graph of X and Y, and the regression line or not
 
     # return: np.array of d x h vector, d features, h output, w = inv(X.T @ X) @ X.T @ Y
     
     # add bias to X
-    X = np.hstack((np.ones((X.shape[0], 1)), X))
+    X = paddingOfOnes(X)
 
     if X.shape[0] != Y.shape[0]:
         raise ValueError("X and Y should have the same number of samples")
@@ -67,7 +72,9 @@ def linearRegressionWithBias(X, Y, printResult=False, printFeature=None):
 
     if printResult:
         print("rank(X) = ", matrix_rank(X.T @ X))
-        print("W = ", W)
+        print("W =\n", W)
+        MSE = mean_squared_error(X @ W,Y)
+        print("MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
@@ -84,7 +91,18 @@ def linearRegressionWithBias(X, Y, printResult=False, printFeature=None):
 
     return W
 
-X = np.array([[3], [4], [10], [6], [7]])
-Y = np.array([[0, 5], [1.5, 4], [-3, 8], [-4, 10], [1, 6]])
-w = linearRegressionWithBias(X, Y, printResult=False, printFeature=1)
-print(w)
+def testData(X, W, printResult=False):
+    # X: np.array of m x d matrix, m sample, d features, no bias
+    # W: np.array of d x h vector, d features, h output
+    # return Y: np.array of m x h vector, m sample, h output
+    
+    if X.shape[1] != W.shape[0]:
+        raise ValueError("X and W should have the same number of features")
+    
+    Y = X @ W
+    
+    if printResult:
+        print("X @ W = Y =\n", Y)
+
+    return Y
+    
