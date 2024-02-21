@@ -7,6 +7,30 @@ from sklearn.metrics import mean_squared_error
 
 import matplotlib.pyplot as plt
 
+def rightInverse(X):
+    # X: np.array of m x d matrix, m sample, d features for m < d, wide matrix
+    # return: np.array of d x m matrix, d features, m sample, right inverse of X
+    
+    # to have right inverse, X must be full row rank, rank = m, or XXT is invertible
+    # RI = X.T @ inv(X @ X.T)
+    
+    if det(X @ X.T) == 0:
+        raise ValueError("X @ X.T is singular, no right inverse exists")
+
+    return X.T @ inv(X @ X.T)
+
+def leftInverse(X):
+    # X: np.array of m x d matrix, m sample, d features for m > d, tall matrix
+    # return: np.array of d x m matrix, d features, m sample, left inverse of X
+    
+    # to have left inverse, X must be full colum rank, rank = d, or XTX is invertible
+    # LI = inv(X.T @ X) @ X.T
+    
+    if det(X.T @ X) == 0:
+        raise ValueError("X.T @ X is singular, no left inverse exists")
+
+    return inv(X.T @ X) @ X.T
+
 def paddingOfOnes(X):
     # X: np.array of m x d matrix, m sample, d features, no bias
     # return: np.array of m x (d+1) matrix, m sample, d+1 features, with bias

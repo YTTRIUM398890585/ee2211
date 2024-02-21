@@ -5,13 +5,14 @@ import numpy as np
 
 import matplotlib.pyplot as plt
 
+
 import pandas as pd
 
 from sklearn.metrics import mean_squared_error
 
 
 # Question 1 ########################################################################################
-print("Question 1")
+print("Question 1 ########################################################################################")
 
 X = np.array([[-10], [-8], [-3], [-1], [2], [8]])
 Y = np.array([[5], [5], [4], [3], [2], [2]])
@@ -21,7 +22,7 @@ W_bias = helper.linearRegressionWithBias(X, Y, printResult=True, printFeature=1)
 W_nobias = helper.linearRegressionWithoutBias(X, Y, printResult=True, printFeature=0)
 
 # Question 2 ########################################################################################
-print("Question 2")
+print("Question 2 ########################################################################################")
 
 X = np.array([[1, 0, 1], [2, -1, 1], [1, 1, 5]])
 Y = np.array([[1], [2], [3]])
@@ -37,6 +38,7 @@ print("Ytest1_nobias =\n", Ytest1_nobias)
 Ytest2_nobias = helper.testData(Xtest2, W_nobias, printResult=False)
 print("Ytest2_nobias =\n", Ytest2_nobias)
 
+# this is wrong, should use right inverse
 W_bias = helper.linearRegressionWithBias(
     X, Y, printResult=True, printFeature=None)
 
@@ -49,8 +51,18 @@ print("Ytest1_bias =\n", Ytest1_bias)
 Ytest2_bias = helper.testData(Xtest2, W_bias, printResult=False)
 print("Ytest2_bias =\n", Ytest2_bias)
 
+# after adding bias, its a wider matrix so should solve with right inverse
+W_bias_right = helper.rightInverse(helper.paddingOfOnes(X)) @ Y
+print("W_bias_right =\n", W_bias_right)
+
+Ytest1_bias = helper.testData(Xtest1, W_bias_right, printResult=False)
+print("Ytest1_bias =\n", Ytest1_bias)
+Ytest2_bias = helper.testData(Xtest2, W_bias_right, printResult=False)
+print("Ytest2_bias =\n", Ytest2_bias)
+
+
 # Question 3 ########################################################################################
-print("Question 3")
+print("Question 3 ########################################################################################")
 
 X = np.array([[36], [28], [35], [39], [30], [30], [31], [38], [36], [38], [29], [26]])
 Y = np.array([[31], [29], [34], [35], [29], [30], [30], [38], [34], [33], [29], [26]])
@@ -73,7 +85,7 @@ Ytest2 = helper.testData(Xtest2, w, printResult=False)
 print("Ytest2 =\n", Ytest2)
 
 # Question 4 ########################################################################################
-print("Question 4")
+print("Question 4 ########################################################################################")
 
 X = np.array([[36], [26], [35], [39], [26], [30],
              [31], [38], [36], [38], [26], [26]])
@@ -126,10 +138,10 @@ plt.ylabel('Y')
 plt.show()
 
 # Question 5 ########################################################################################
-
+print("Question 5 ########################################################################################")
 
 # Question 6 ########################################################################################
-print("Question 6")
+print("Question 6 ########################################################################################")
 
 wine_df = pd.read_csv("wine.csv", sep=';')
 print(wine_df)
@@ -161,7 +173,7 @@ MSE = mean_squared_error(Ytest_pred, Ytest)
 print("MSE = ", MSE)
 
 # Question 7 ########################################################################################
-print("Question 7")
+print("Question 7 ########################################################################################")
 
 X = np.array([[3, -1, 0], [5, 1, 2], [9, -1, 3], [-6, 7, 2], [3, -2, 0]])
 Y = np.array([[1, -1], [-1, 0], [1, 2], [0, 3], [1, -2]])
