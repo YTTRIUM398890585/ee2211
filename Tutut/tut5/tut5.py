@@ -139,12 +139,31 @@ plt.show()
 
 # Question 5 ########################################################################################
 print("Question 5 ########################################################################################")
+exp_df = pd.read_csv("GovernmentExpenditureonEducation.csv")
+exp_df.info()
+
+X = np.array(exp_df['year']).reshape(-1, 1)
+Y = np.array(exp_df['total_expenditure_on_education']).reshape(-1, 1)
+print("X =\n", X)
+print("Y =\n", Y)
+
+# xw = Y regression
+W = helper.linearRegressionWithBias(X, Y, printResult=True, printFeature=1)
+
+x_test = helper.paddingOfOnes(np.array([[2021]]))
+
+y_predict = helper.testData(x_test, W, printResult=False)
+
+print("y_predict =\n", y_predict)
 
 # Question 6 ########################################################################################
 print("Question 6 ########################################################################################")
 
-wine_df = pd.read_csv("wine.csv", sep=';')
-print(wine_df)
+# wine_df = pd.read_csv("wine.csv", sep=';')
+# print(wine_df)
+
+wine_df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=";")
+wine_df.info()
 
 X = np.array(wine_df.drop('quality', axis=1)) # drop the quality column, the other columns are the features
 Y = np.array(wine_df['quality'].tolist()).reshape(-1, 1) # the quality column is the output
