@@ -1,6 +1,4 @@
-import sys
-sys.path.append('../../')   # nopep8
-import ee2211pythonhelper as helper  # nopep8
+
 import numpy as np
 
 import matplotlib.pyplot as plt
@@ -10,6 +8,10 @@ import pandas as pd
 
 from sklearn.metrics import mean_squared_error
 
+import sys
+sys.path.append('../../')   # nopep8
+import ee2211pythonhelper as helper  # nopep8
+
 
 # Question 1 ########################################################################################
 print("Question 1 ########################################################################################")
@@ -17,9 +19,11 @@ print("Question 1 ##############################################################
 X = np.array([[-10], [-8], [-3], [-1], [2], [8]])
 Y = np.array([[5], [5], [4], [3], [2], [2]])
 
-W_bias = helper.linearRegressionWithBias(X, Y, printResult=True, printFeature=1)
+W_bias = helper.linearRegressionWithBias(
+    X, Y, printResult=True, printFeature=1)
 
-W_nobias = helper.linearRegressionWithoutBias(X, Y, printResult=True, printFeature=0)
+W_nobias = helper.linearRegressionWithoutBias(
+    X, Y, printResult=True, printFeature=0)
 
 # Question 2 ########################################################################################
 print("Question 2 ########################################################################################")
@@ -64,8 +68,10 @@ print("Ytest2_bias =\n", Ytest2_bias)
 # Question 3 ########################################################################################
 print("Question 3 ########################################################################################")
 
-X = np.array([[36], [28], [35], [39], [30], [30], [31], [38], [36], [38], [29], [26]])
-Y = np.array([[31], [29], [34], [35], [29], [30], [30], [38], [34], [33], [29], [26]])
+X = np.array([[36], [28], [35], [39], [30], [30],
+             [31], [38], [36], [38], [29], [26]])
+Y = np.array([[31], [29], [34], [35], [29], [30],
+             [30], [38], [34], [33], [29], [26]])
 
 plt.plot(X, Y, 'x')
 plt.xlabel('X')
@@ -117,7 +123,8 @@ print("X_unique =\n", X_unique)
 print("Y_unique =\n", Y_unique)
 
 # xw = Y regression
-w_unique = helper.linearRegressionWithBias(X_unique, Y_unique, printResult=True, printFeature=1)
+w_unique = helper.linearRegressionWithBias(
+    X_unique, Y_unique, printResult=True, printFeature=1)
 
 # predict
 Ytest1_unique = helper.testData(Xtest1, w_unique, printResult=False)
@@ -130,7 +137,8 @@ plt.plot(X, Y, 'o', color='blue')
 plt.plot(X, np.hstack((np.ones((X.shape[0], 1)), X)) @ w, '-', color='red')
 
 # plot the graph for the unique data
-plt.plot(X, np.hstack((np.ones((X.shape[0], 1)), X)) @ w_unique, '-', color='green')
+plt.plot(X, np.hstack(
+    (np.ones((X.shape[0], 1)), X)) @ w_unique, '-', color='green')
 
 plt.xlabel('X')
 plt.ylabel('Y')
@@ -162,11 +170,14 @@ print("Question 6 ##############################################################
 # wine_df = pd.read_csv("wine.csv", sep=';')
 # print(wine_df)
 
-wine_df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=";")
+wine_df = pd.read_csv(
+    "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv", sep=";")
 wine_df.info()
 
-X = np.array(wine_df.drop('quality', axis=1)) # drop the quality column, the other columns are the features
-Y = np.array(wine_df['quality'].tolist()).reshape(-1, 1) # the quality column is the output
+# drop the quality column, the other columns are the features
+X = np.array(wine_df.drop('quality', axis=1))
+# the quality column is the output
+Y = np.array(wine_df['quality'].tolist()).reshape(-1, 1)
 
 print("X\n", X)
 print("Y\n", Y)
@@ -182,7 +193,8 @@ print("Xtest\n", Xtest)
 print("Ytest\n", Ytest)
 
 # Training
-w = helper.linearRegressionWithBias(Xtrain, Ytrain, printResult=True, printFeature=None)
+w = helper.linearRegressionWithBias(
+    Xtrain, Ytrain, printResult=True, printFeature=None)
 
 # Prediction Test
 Ytest_pred = helper.testData(helper.paddingOfOnes(Xtest), w, printResult=False)
