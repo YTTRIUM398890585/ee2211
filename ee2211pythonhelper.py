@@ -4,6 +4,7 @@ from numpy.linalg import det
 from numpy.linalg import matrix_rank
 
 from sklearn.metrics import mean_squared_error
+from sklearn.preprocessing import PolynomialFeatures
 
 import matplotlib.pyplot as plt
 
@@ -16,7 +17,7 @@ def rightInverse(X):
     # RI = X.T @ inv(X @ X.T)
 
     if det(X @ X.T) == 0:
-        raise ValueError("X @ X.T is singular, no right inverse exists")
+        raise ValueError("[rightInverse]: X @ X.T is singular, no right inverse exists")
 
     return X.T @ inv(X @ X.T)
 
@@ -29,7 +30,7 @@ def leftInverse(X):
     # LI = inv(X.T @ X) @ X.T
 
     if det(X.T @ X) == 0:
-        raise ValueError("X.T @ X is singular, no left inverse exists")
+        raise ValueError("[leftInverse]: X.T @ X is singular, no left inverse exists")
 
     return inv(X.T @ X) @ X.T
 
@@ -56,35 +57,30 @@ def linearRegressionWithoutBias(X, Y, printResult=False, printFeature=None):
     d = X.shape[1]
 
     if m != Y.shape[0]:
-        raise ValueError("X and Y should have the same number of samples")
+        raise ValueError("[linearRegressionWithoutBias]: X and Y should have the same number of samples")
     
     if m > d:
-        if det(X.T @ X) == 0:
-            raise ValueError("X.T @ X is singular, no left inverse exists")
+        if printResult : print("[linearRegressionWithoutBias]: m > d, method used = left inverse")
         
-        W = inv(X.T @ X) @ X.T @ Y 
+        W = leftInverse(X) @ Y 
         
-        if printResult : print("m > d, methodUsed = left inverse")
     elif m == d:
+        if printResult : print("[linearRegressionWithoutBias]: m = d, method used = inverse")
+        
         if det(X) == 0:
-            raise ValueError("X is singular, no inverse exists")
+            raise ValueError("[linearRegressionWithoutBias]: X is singular, no inverse exists")
         
         W = inv(X) @ Y 
-        
-        if printResult : print("m = d, methodUsed = inverse")
     else:
-        if det(X @ X.T) == 0:
-            raise ValueError("X @ X.T is singular, no right inverse exists")
+        if printResult : print("[linearRegressionWithoutBias]: m < d, method used = right inverse")
         
-        W = X.T @ inv(X @ X.T) @ Y 
-        
-        if printResult : print("m < d, methodUsed = right inverse")
+        W = rightInverse(X) @ Y 
         
     if printResult:
-        print("rank(X) = ", matrix_rank(X.T @ X))
-        print("W =\n", W)
+        print("[linearRegressionWithoutBias]: rank(X) = ", matrix_rank(X.T @ X))
+        print("[linearRegressionWithoutBias]: W =\n", W)
         MSE = mean_squared_error(X @ W, Y)
-        print("MSE = ", MSE)
+        print("[linearRegressionWithoutBias]: MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
@@ -121,35 +117,35 @@ def linearRegressionWithBias(X, Y, printResult=False, printFeature=None):
     dpadded = X.shape[1]
 
     if m != Y.shape[0]:
-        raise ValueError("X and Y should have the same number of samples")
+        raise ValueError("[linearRegressionWithBias]: X and Y should have the same number of samples")
     
     if m > dpadded:
         if det(X.T @ X) == 0:
-            raise ValueError("X.T @ X is singular, no left inverse exists")
+            raise ValueError("[linearRegressionWithBias]: X.T @ X is singular, no left inverse exists")
         
         W = inv(X.T @ X) @ X.T @ Y 
         
-        if printResult : print("m > dpadded, methodUsed = left inverse")
+        if printResult : print("[linearRegressionWithBias]: m > dpadded, method used = left inverse")
     elif m == dpadded:
         if det(X) == 0:
-            raise ValueError("X is singular, no inverse exists")
+            raise ValueError("[linearRegressionWithBias]: X is singular, no inverse exists")
         
         W = inv(X) @ Y 
         
-        if printResult : print("m = dpadded, methodUsed = inverse")
+        if printResult : print("[linearRegressionWithBias]: m = dpadded, method used = inverse")
     else:
         if det(X @ X.T) == 0:
-            raise ValueError("X @ X.T is singular, no right inverse exists")
+            raise ValueError("[linearRegressionWithBias]: X @ X.T is singular, no right inverse exists")
         
         W = X.T @ inv(X @ X.T) @ Y 
         
-        if printResult : print("m < dpadded, methodUsed = right inverse")
+        if printResult : print("[linearRegressionWithBias]: m < dpadded, method used = right inverse")
 
     if printResult:
-        print("rank(X) = ", matrix_rank(X.T @ X))
-        print("W =\n", W)
+        print("[linearRegressionWithBias]: rank(X) = ", matrix_rank(X.T @ X))
+        print("[linearRegressionWithBias]: W =\n", W)
         MSE = mean_squared_error(X @ W, Y)
-        print("MSE = ", MSE)
+        print("[linearRegressionWithBias]: MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
@@ -167,7 +163,7 @@ def linearRegressionWithBias(X, Y, printResult=False, printFeature=None):
     return W
 
 
-def ridgeRegressionPrimal(X, y, lam, printResult=False, printFeature=None):
+def ridgeRegressionPrimal(X, Y, lam, printResult=False, printFeature=None):
     # use for m > d
 
     # X: np.array of m x d matrix, m sample, d features, no bias
@@ -177,28 +173,30 @@ def ridgeRegressionPrimal(X, y, lam, printResult=False, printFeature=None):
 
     # return: np.array of d x 1 vector, d features, 1 output, w = inv(X.T @ X + lam I) @ X.T @ y
     # I is d x d
-    w = inv((X.T @ X) + lam * np.identity(X.shape[1])) @ X.T @ y
+    W = inv((X.T @ X) + lam * np.identity(X.shape[1])) @ X.T @ Y
 
     if printResult:
-        print("W =\n", W)
+        print("[ridgeRegressionPrimal]: W =\n", W)
+        MSE = mean_squared_error(X @ W, Y)
+        print("[ridgeRegressionPrimal]: MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
         # plot the graph of printFeature column (zero index) of X and Y, original
-        plt.plot(X[:, printFeature], y, 'o', label='original')
+        plt.plot(X[:, printFeature], Y, 'o', label='original')
 
         # plot the graph of printFeature column (zero index) of X and XW, regression
-        plt.plot(X[:, printFeature], X @ w, '-', label='regression')
+        plt.plot(X[:, printFeature], X @ W, '-', label='regression')
 
         plt.xlabel('X')
-        plt.ylabel('y')
+        plt.ylabel('Y')
 
         plt.show()
 
-    return w
+    return W
 
 
-def ridgeRegressionDual(X, y, lam, printResult=False, printFeature=None):
+def ridgeRegressionDual(X, Y, lam, printResult=False, printFeature=None):
     # use for m < d
 
     # X: np.array of m x d matrix, m sample, d features, no bias
@@ -208,28 +206,60 @@ def ridgeRegressionDual(X, y, lam, printResult=False, printFeature=None):
 
     # return: np.array of d x 1 vector, d features, 1 output, w = X.T @ inv(X @ X.T + lam I)  @ y
     # I is m x m
-    w = X.T @ inv((X @ X.T) + lam * np.identity(X.shape[0])) @ y
+    W = X.T @ inv((X @ X.T) + lam * np.identity(X.shape[0])) @ Y
 
     if printResult:
-        print("W =\n", W)
+        print("[ridgeRegressionDual]: W =\n", W)
+        MSE = mean_squared_error(X @ W, Y)
+        print("[ridgeRegressionDual]: MSE = ", MSE)
 
     if printFeature != None:
         # X[:, printFeature] = all rows in column printFeature
         # plot the graph of printFeature column (zero index) of X and Y, original
-        plt.plot(X[:, printFeature], y, 'o', label='original')
+        plt.plot(X[:, printFeature], Y, 'o', label='original')
 
         # plot the graph of printFeature column (zero index) of X and XW, regression
-        plt.plot(X[:, printFeature], X @ w, '-', label='regression')
+        plt.plot(X[:, printFeature], X @ W, '-', label='regression')
 
         plt.xlabel('X')
-        plt.ylabel('y')
+        plt.ylabel('Y')
 
         plt.show()
 
-    return w
+    return W
 
 
-# def polynomialRegression(X, y, order, printResult=False, printFeature=None):
+def polynomialRegression(X, Y, order, lam, printResult=False):
+    # create a polynomial regression model of order order
+    # and shove X into the model to get the polynomial features matrix P
+    # input to polynomial fit transform doesn't need to pad 1, it automatically does it
+    poly = PolynomialFeatures(order)
+    print(poly)
+    P = poly.fit_transform(X)
+    print("[polynomialRegression]: matrix P =\n", P)
+
+    # if m >= d, use primal ridge regression, if lam == 0, its just left inverse
+    if P.shape[0] >= P.shape[1]:
+        print("[polynomialRegression]: m >= d, method used = primal ridge regression")
+        W = ridgeRegressionPrimal(P, Y, lam, printResult=printResult)
+    # else m < d, use dual ridge regression, if lam == 0, its just right inverse
+    else:
+        print("[polynomialRegression]: m < d, method used = dual ridge regression")
+        W = ridgeRegressionDual(P, Y, lam, printResult=printResult)
+        
+    return W
+
+
+def testPolyReg(X, W, order, printResult=False):
+    # fit test X in to the polynomial model with order order
+    # and get the output Y
+    poly = PolynomialFeatures(order)
+    print(poly)
+    P = poly.fit_transform(X)
+    print("[testPolyReg]: testPoly =\n", P)
+    
+    return testData(P, W, printResult=printResult)   
+    
 
 def testData(X, W, printResult=False):
     # X: np.array of m x d matrix, m sample, d features, no bias
@@ -237,11 +267,21 @@ def testData(X, W, printResult=False):
     # return Y: np.array of m x h vector, m sample, h output
 
     if X.shape[1] != W.shape[0]:
-        raise ValueError("X and W should have the same number of features")
+        raise ValueError("[testData]: X and W should have the same number of features")
 
     Y = X @ W
 
     if printResult:
-        print("X @ W = Y =\n", Y)
+        print("[testData]: X @ W = Y =\n", Y)
 
     return Y
+
+def textToMatrix():
+    text = input("Enter the matrix in text format: ")
+    return [[float(j) for j in i.split()] for i in text.split(';')]
+
+# while(1):
+#     try:
+#         print("input matrix =\n", textToMatrix())
+#     except:
+#         print("Error in input matrix")
