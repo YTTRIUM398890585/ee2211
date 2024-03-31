@@ -229,23 +229,39 @@ def ridgeRegressionDual(X, Y, lam, printResult=False, printFeature=None):
     return W
 
 
-def polynomialRegression(X, Y, order, lam, printResult=False):
+def polynomialRegression(X, Y, order, lam, forceMethod=None, printResult=False):
     # create a polynomial regression model of order order
     # and shove X into the model to get the polynomial features matrix P
     # input to polynomial fit transform doesn't need to pad 1, it automatically does it
     poly = PolynomialFeatures(order)
-    print(poly)
     P = poly.fit_transform(X)
-    print("[polynomialRegression]: matrix P =\n", P)
-
-    # if m >= d, use primal ridge regression, if lam == 0, its just left inverse
-    if P.shape[0] >= P.shape[1]:
-        print("[polynomialRegression]: m >= d, method used = primal ridge regression")
-        W = ridgeRegressionPrimal(P, Y, lam, printResult=printResult)
-    # else m < d, use dual ridge regression, if lam == 0, its just right inverse
-    else:
-        print("[polynomialRegression]: m < d, method used = dual ridge regression")
+    
+    if printResult:
+        print("[polynomialRegression]: matrix P =\n", P)
+        
+    if forceMethod == None:
+        # if m >= d, use primal ridge regression, if lam == 0, its just left inverse
+        if P.shape[0] >= P.shape[1]:
+            if printResult:
+                print("[polynomialRegression]: m >= d, method used = primal ridge regression")
+                
+            W = ridgeRegressionPrimal(P, Y, lam, printResult=printResult)
+        # else m < d, use dual ridge regression, if lam == 0, its just right inverse
+        else:
+            if printResult:
+                print("[polynomialRegression]: m < d, method used = dual ridge regression")
+                
+            W = ridgeRegressionDual(P, Y, lam, printResult=printResult)
+    elif forceMethod == "dual":
+        if printResult:
+                print("[polynomialRegression]: forced to use dual ridge regression")
+                
         W = ridgeRegressionDual(P, Y, lam, printResult=printResult)
+    elif forceMethod == "primal":
+        if printResult:
+                print("[polynomialRegression]: forced to use primal ridge regression")
+                
+        W = ridgeRegressionPrimal(P, Y, lam, printResult=printResult)
         
     return W
 
@@ -254,9 +270,10 @@ def testPolyReg(X, W, order, printResult=False):
     # fit test X in to the polynomial model with order order
     # and get the output Y
     poly = PolynomialFeatures(order)
-    print(poly)
     P = poly.fit_transform(X)
-    print("[testPolyReg]: testPoly =\n", P)
+    
+    if printResult:
+        print("[testPolyReg]: testPoly =\n", P)
     
     return testData(P, W, printResult=printResult)   
     
@@ -279,6 +296,53 @@ def testData(X, W, printResult=False):
 def textToMatrix():
     text = input("Enter the matrix in text format: ")
     return [[float(j) for j in i.split()] for i in text.split(';')]
+
+def correlation(Feature, Target_y):
+    mean_Feature = sum(Feature)/len(Feature)
+    mean_Target_y = sum(Target_y)/len(Target_y)
+    
+    sd_Feature = (sum([(i - mean_Feature)**2 for i in Feature])/len(Feature))**0.5
+    sd_Target_y = (sum([(i - mean_Target_y)**2 for i in Target_y])/len(Target_y))**0.5
+    
+    cov_Feature_Target_y = sum([(Feature[i] - mean_Feature)*(Target_y[i] - mean_Target_y) for i in range(len(Feature))])/len(Feature)
+    
+    return cov_Feature_Target_y/(sd_Feature*sd_Target_y)
+
+def gradientDescentApprox(f, initial, learning_rate, num_iters, smallStep=1e-6):
+    # print("smallStep= ", smallStep)
+    
+    def f_prime(x, smallStep=smallStep):        
+        if type(x) == np.float64 or type(x) == np.int32 or len(x) == 1:
+            # if scalar function, this performs df/dx
+            # print("scalar derivative")
+            return (f(x + smallStep) - f(x - smallStep))/(2 * smallStep)
+        else:
+            # if vector function, this performs del f 
+            # print("vector derivative")
+            dim = len(x)
+            grad = np.zeros(dim)
+            for i in range(dim):
+                x_plus_h = np.copy(x)
+                x_plus_h[i] += smallStep
+                x_minus_h = np.copy(x)
+                x_minus_h[i] -= smallStep
+                grad[i] = (f(x_plus_h) - f(x_minus_h)) / (2 * smallStep)
+                
+            # print("grad= ", grad)
+            return grad
+    
+    return gradientDescent(f, f_prime, initial, learning_rate, num_iters)
+
+def gradientDescent(f, f_prime, initial, learning_rate, num_iters):
+    steps = np.array([initial],)
+        
+    for iteration in range(num_iters):
+        new_step = steps[iteration] - learning_rate * np.array(f_prime(steps[iteration]))
+        steps = np.vstack((steps, new_step))
+        
+    flist = np.array([f(i) for i in steps])
+
+    return steps, flist
 
 # while(1):
 #     try:
