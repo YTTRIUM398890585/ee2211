@@ -2,6 +2,8 @@ import A3_A0262349Y as grading
 
 import A3_A0257926N as gradingJSIM
 
+import A3_A0258695H as gradingJW
+
 import numpy as np
 
 import sys
@@ -37,9 +39,9 @@ print("f3_out = \n", f3_out)
 # print("Type of f3_out = ", type(f3_out))
 
 
-print("__________________________JSIM_________________________")
+print("__________________________JW_________________________")
 
-a_out, f1_out, b_out, f2_out, c_out, d_out, f3_out = gradingJSIM.A3_A0257926N(learning_rate, num_iters)
+a_out, f1_out, b_out, f2_out, c_out, d_out, f3_out = gradingJW.A3_A0258695H(learning_rate, num_iters)
 
 print("a_out = \n", a_out)
 print("f1_out = \n", f1_out)
