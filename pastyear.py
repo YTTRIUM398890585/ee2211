@@ -14,18 +14,31 @@ from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
 ''' '''
-y1 = np.array([2.1, 1.5, 5.8, 6.1])
-y2 = np.array([9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
-y = np.array([2.1, 1.5, 5.8, 6.1, 9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
-print("root", mean_squared_error(y, np.mean(y)*np.ones(len(y))))
-print("left", mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))))
-print("right", mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))))
+# y1 = np.array([2.1, 1.5, 5.8, 6.1])
+# y2 = np.array([9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+# y = np.array([2.1, 1.5, 5.8, 6.1, 9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+# print("root", mean_squared_error(y, np.mean(y)*np.ones(len(y))))
+# print("left", mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))))
+# print("right", mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))))
 
-print("overall depth 1", (mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))) * len(y1) + mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))) * len(y2))/len(y))
+# print("overall depth 1", (mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))) * len(y1) + mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))) * len(y2))/len(y))
 
-helper.customMSE(y)
-helper.customMSE(y1)
-helper.customMSE(y2)
+# helper.customMSE(y)
+# helper.customMSE(y1)
+# helper.customMSE(y2)
+
+# X = np.array([[4.0, -3.0, 6.0], [1.0, 0.0, 10.0]])
+
+# X = np.array([[5.0, 0.0], [6.0, -6.0], [8.0, 11.0], [4.0, 1.0]])
+
+# X = np.array([[2.0, 5.0, 6.0, 7.0], [-1.0, 3.0, -3.0, 8.0], [7.0, 9.0, 8.0, 2.0]])
+ 
+# print(helper.leftInverse(X))
+# print(helper.rightInverse(X))
+
+# print(helper.leftInverse(X) @ X)
+# print(X @ helper.rightInverse(X))
+
 
 ''' Example for linear regression with biasing and polynomial regression '''
 # X = np.array([[-10], [-8], [-3], [-1], [2], [8]])
@@ -86,6 +99,43 @@ helper.customMSE(y2)
 # xtest = np.array([[6]])
 # ytest_poly = helper.testPolyReg(xtest, w_poly, order, True)
 
+
+# X = np.array([[3], [4], [5], [6], [7]])
+# Y = np.array([[5], [4], [3], [2], [1]])
+
+# w_lin = helper.linearRegressionWithBias(X, Y, printResult=True)
+# xtest = np.array([[8]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+  
+# X = np.array([[1.0, 2.0], [0.0, 6.0], [1.0, 0.0], [0.0, 5.0], [1.0, 7.0]])
+# Y = np.array([[1.0], [2.0], [3.0], [4.0], [5.0]])
+
+# w_lin = helper.linearRegressionWithBias(X, Y, printResult=True)
+# xtest = np.array([[1, 3]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+
+
+
+
+# X = np.array([[45.0, 9.0], [50.0, 10.0], [63.0, 12.0], [70.0, 8.0], [80.0, 4.0]])
+# Y1 = np.array([[6.0], [9.0], [8.0], [3.0], [2.0]])
+# Y2 = np.array([[5.0], [6.0], [9.0], [2.0], [4.0]])
+
+# w_lin = helper.linearRegressionWithBias(X, Y1, printResult=True)
+# xtest = np.array([[63, 9]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+
+# w_lin = helper.linearRegressionWithBias(X, Y2, printResult=True)
+# xtest = np.array([[63, 9]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
  
 ''' Example for pearson correlation coefficient '''
 # f1 = np.array([0.3510, 2.1812, 0.2415, -0.1096, 0.1544])
@@ -183,6 +233,18 @@ helper.customMSE(y2)
 
 # print(helper.gradientDescent(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, lambda cd:(2*cd[0] + cd[1]**2, 2*cd[0]*cd[1]), (3, 2), learning_rate, num_iters)[0])
 # print(helper.gradientDescent(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, lambda cd:(2*cd[0] + cd[1]**2, 2*cd[0]*cd[1]), (3, 2), learning_rate, num_iters)[1])
+
+# print(helper.gradientDescentApprox(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, (3, 2), learning_rate, num_iters, smallStep=1e-1)[0])
+# print(helper.gradientDescentApprox(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, (3, 2), learning_rate, num_iters, smallStep=1e-1)[1])
+
+# learning_rate = 0.1
+# num_iters = 1
+
+# print(helper.gradientDescent(lambda a:np.sin(a)**2, lambda a:2*np.sin(a)*np.cos(a), 3, learning_rate, num_iters)[0])
+# print(helper.gradientDescent(lambda a:np.sin(a)**2, lambda a:2*np.sin(a)*np.cos(a), 3, learning_rate, num_iters)[1])
+
+# print(helper.gradientDescentApprox(lambda a:np.sin(a)**2, 3, learning_rate, num_iters, smallStep=1e-1)[0])
+# print(helper.gradientDescentApprox(lambda a:np.sin(a)**2, 3, learning_rate, num_iters, smallStep=1e-1)[1])
 
 ''' Example for tree classifier '''
 # from sklearn.datasets import load_iris
