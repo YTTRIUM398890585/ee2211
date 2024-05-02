@@ -3,7 +3,8 @@ from numpy.linalg import inv
 from numpy.linalg import det
 from numpy.linalg import matrix_rank
 
-from sklearn.metrics import mean_squared_error
+from sklearn import tree
+from sklearn.metrics import mean_squared_error, accuracy_score
 from sklearn.preprocessing import PolynomialFeatures
 
 import matplotlib.pyplot as plt
@@ -293,10 +294,6 @@ def testData(X, W, printResult=False):
 
     return Y
 
-def textToMatrix():
-    text = input("Enter the matrix in text format: ")
-    return [[float(j) for j in i.split()] for i in text.split(';')]
-
 def correlation(Feature, Target_y):
     mean_Feature = sum(Feature)/len(Feature)
     mean_Target_y = sum(Target_y)/len(Target_y)
@@ -344,8 +341,72 @@ def gradientDescent(f, f_prime, initial, learning_rate, num_iters):
 
     return steps, flist
 
-# while(1):
-#     try:
-#         print("input matrix =\n", textToMatrix())
-#     except:
-#         print("Error in input matrix")
+def treeRegressor(X_train, X_test, y_train, y_test, criterion, max_depth):
+    '''
+    Only from 1D to 1D regression
+    '''
+
+    # X_train is of shape (n_samples,)
+    # X_test is of shape (n_samples,)
+    
+    # encoded in 0, 1, 2, ...
+    # y_train is of shape (n_samples,)
+    # y_test is of shape (n_samples,)
+    
+    sort_index = X_train.argsort()
+    X_train = X_train[sort_index]
+    y_train = y_train[sort_index]
+    
+    sort_index = X_test.argsort()
+    X_test = X_test[sort_index]
+    y_test = y_test[sort_index]
+
+    # scikit decision tree regressor
+    scikit_tree = tree.DecisionTreeRegressor(criterion=criterion, max_depth=max_depth)
+    scikit_tree.fit(X_train.reshape(-1,1), y_train) # reshape necessary because tree expects 2D array
+    
+    # predict
+    y_trainpred = scikit_tree.predict(X_train.reshape(-1,1))
+    y_testpred = scikit_tree.predict(X_test.reshape(-1,1))
+    
+    # print accuracies
+    print("[treeRegressor] Training MSE: ", mean_squared_error(y_train, y_trainpred))
+    print("[treeRegressor] Test MSE: ", mean_squared_error(y_test, y_testpred))
+    
+    # Plot
+    plt.figure(0, figsize=[9,4.5])
+    plt.rcParams.update({'font.size': 16})
+    plt.scatter(X_train, y_train, c='steelblue', s=30)
+    plt.plot(X_train, y_trainpred, color='red', lw=2, label='scikit-learn')
+    plt.xlabel('X train')
+    plt.ylabel('Y train and predict')
+    plt.legend(loc='upper right',ncol=3, fontsize=10)
+    plt.show()
+    
+def treeClassifier(X_train, X_test, y_train, y_test, criterion, max_depth):
+    # can be any number of features
+    # X_train is of shape (n_samples, n_features)
+    # X_test is of shape (n_samples, n_features)
+    
+    # encoded in 0, 1, 2, ...
+    # y_train is of shape (n_samples,)
+    # y_test is of shape (n_samples,)
+    
+    # fit tree
+    dtree = tree.DecisionTreeClassifier(criterion=criterion, max_depth=max_depth)
+    dtree = dtree.fit(X_train, y_train) 
+    
+    # predict
+    y_trainpred = dtree.predict(X_train)
+    y_testpred = dtree.predict(X_test)
+    
+    # print accuracies
+    print("[treeClassifier] Training accuracy: ", accuracy_score(y_train, y_trainpred))
+    print("[treeClassifier] Test accuracy: ", accuracy_score(y_test, y_testpred))    
+
+    # Plot tree
+    tree.plot_tree(dtree)
+    plt.show()
+    
+    # tree decision is given with respect to X[feature index]
+    # a plot of the tree with [class 0, class 1, class 2, ...] as the amount in each class

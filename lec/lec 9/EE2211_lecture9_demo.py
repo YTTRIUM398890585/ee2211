@@ -54,9 +54,9 @@ def find_best_split(y):
 
 #main
 #Input (house size and rooms) and output (price)
-S = np.array([0.5, 0.6, 1.0, 2.0, 3.0, 3.2, 3.8])
+S = np.array([3.2, 3.8, 0.5, 0.6, 1.0, 2.0, 3.0])
 R = np.array([2,1,3,5,4,6,7])
-P = np.array([0.19, 0.23, 0.28, 0.42, 0.53, 0.75, 0.80])
+P = np.array([0.75, 0.80, 0.19, 0.23, 0.28, 0.42, 0.53])
 
 #sort
 sort_index = S.argsort()
@@ -83,5 +83,6 @@ plt.plot(S, tree_predict, color='red', linestyle='--', lw=2, label='our own tree
 plt.xlabel('House Size')
 plt.ylabel('House Price')
 plt.legend(loc='upper right',ncol=3, fontsize=10)
-plt.savefig('Fig_Lec9_decisiontree.png')
+# plt.savefig('Fig_Lec9_decisiontree.png')
+plt.show()
 

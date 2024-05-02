@@ -19,30 +19,37 @@ import matplotlib.pyplot as plt
 # centers = np.array([c1_init , c2_init])
 
 """ 2D data points and centers for testing the k-means algorithm """
+# Data points
+x = np.array([1, 1])
+y = np.array([0, 1])
+z = np.array([0, 0])
+data_points = np.array([x, y, z])
+
+# Initial centers
+centers = np.array([x, y])
+
+""" 1D data points and centers for testing the k-means algorithm """
 # # Data points
-# x = np.array([1, 1])
-# y = np.array([0, 1])
-# z = np.array([0, 0])
-# data_points = np.array([x, y, z])
+# data_points = np.array([[10], [11], [12], [15], [16], [17], [20], [21], [22]])
 
 # # Initial centers
-# centers = np.array([x, y, z])
+# centers = np.array([[10], [15], [20]])
 
 """ random 2D data points and centers for testing the k-means algorithm """
-# Set three centers , the model should predict similar results
-center_1 = np.array([2, 2])
-center_2 = np.array([4, 4])
-center_3 = np.array([6, 1])
+# # Set three centers , the model should predict similar results
+# center_1 = np.array([2, 2])
+# center_2 = np.array([4, 4])
+# center_3 = np.array([6, 1])
 
-# Generate random data and center it to the three centers
-data_1 = np.random.randn(200, 2) + center_1
-data_2 = np.random.randn(200, 2) + center_2
-data_3 = np.random.randn(200, 2) + center_3
-data_points = np.concatenate((data_1, data_2, data_3), axis = 0)
+# # Generate random data and center it to the three centers
+# data_1 = np.random.randn(200, 2) + center_1
+# data_2 = np.random.randn(200, 2) + center_2
+# data_3 = np.random.randn(200, 2) + center_3
+# data_points = np.concatenate((data_1, data_2, data_3), axis = 0)
 
-# initialize cluster centers
-k=2
-centers = data_points[np.random.choice(len(data_points), k, replace=False)]
+# # initialize cluster centers
+# k=2
+# centers = data_points[np.random.choice(len(data_points), k, replace=False)]
 
 """ k-means algorithm """
 def k_means(data_points, centers, n_clusters, max_iterations=100, tol=1e-4):
@@ -71,6 +78,7 @@ def k_means(data_points, centers, n_clusters, max_iterations=100, tol=1e-4):
 """ results """
 centers, labels = k_means(data_points, centers, n_clusters=len(centers))
 print ("Converged centers :", centers)
+print ("Converged labels :", labels)
 
 """ plotting the clustering results only for 2D data """
 plt.title("Clustering Results (only make sense for 2D data)")
