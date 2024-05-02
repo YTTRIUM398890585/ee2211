@@ -13,6 +13,20 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
+''' '''
+y1 = np.array([2.1, 1.5, 5.8, 6.1])
+y2 = np.array([9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+y = np.array([2.1, 1.5, 5.8, 6.1, 9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+print("root", mean_squared_error(y, np.mean(y)*np.ones(len(y))))
+print("left", mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))))
+print("right", mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))))
+
+print("overall depth 1", (mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))) * len(y1) + mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))) * len(y2))/len(y))
+
+helper.customMSE(y)
+helper.customMSE(y1)
+helper.customMSE(y2)
+
 ''' Example for linear regression with biasing and polynomial regression '''
 # X = np.array([[-10], [-8], [-3], [-1], [2], [8]])
 # Y = np.array([[5], [5], [4], [3], [2], [2]])
@@ -39,11 +53,54 @@ from sklearn.preprocessing import PolynomialFeatures
 # # Show the plot
 # plt.show()
 
+# X = np.array([[1.0, 3.0, -2.0], [-4.0, 0.0, -1.0], [3.0, 1.0, 8.0], [2.0, 1.0, 6.0], [8.0, 4.0, 6.0]])
+# Y = np.array([[1.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0], [0.0, 0.0, 1.0]])
+
+# w_lin = helper.linearRegressionWithBias(X, Y, printResult=True)
+# xtest = np.array([[1, -2, 4]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+
+# print(ytest_lin)
+
+# X = np.array([[4], [7], [10], [2], [3], [9]])
+# Y = np.array([[-1], [-1], [-1], [1], [1], [1]])
+
+# w_lin = helper.linearRegressionWithBias(X, Y, printResult=True)
+# xtest = np.array([[4], [7], [10], [2], [3], [9]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+
+# xtest = np.array([[6]])
+
+# xtest_lin = helper.paddingOfOnes(xtest)
+# ytest_lin = helper.testData(xtest_lin, w_lin, True)
+
+# order = 4
+# w_poly = helper.polynomialRegression(X, Y, order, 0, forceMethod=None, printResult=True)
+# xtest = np.array([[4], [7], [10], [2], [3], [9]])
+# ytest_poly = helper.testPolyReg(xtest, w_poly, order, True)
+
+# xtest = np.array([[6]])
+# ytest_poly = helper.testPolyReg(xtest, w_poly, order, True)
+
+ 
 ''' Example for pearson correlation coefficient '''
 # f1 = np.array([0.3510, 2.1812, 0.2415, -0.1096, 0.1544])
 # f2 = np.array([1.1796, 2.1068, 1.7753, 1.2747, 2.0851])
 # f3 = np.array([-0.9852, 1.3766, -1.3244, -0.6316, -0.8320])
 # y = np.array([0.2758, 1.4392, -0.4611, 0.6154, 1.0006])
+
+# print("Correlation between Feature_1 and Target_y: ", helper.correlation(f1, y))
+# print("Correlation between Feature_2 and Target_y: ", helper.correlation(f2, y))
+# print("Correlation between Feature_3 and Target_y: ", helper.correlation(f3, y))
+
+# f1 = np.array([3.3459, 1.0893, 3.2103, 1.744, 1.6762])
+# f2 = np.array([2.7435, 2.9113, 1.4706, 1.2895, 2.1366])
+# f3 = np.array([-1.7253, -0.7804, -0.9944, 0.5307, -1.0502])
+# y = np.array([2.9972, 1.1399, 2.228, 0.3387, 2.5042])
 
 # print("Correlation between Feature_1 and Target_y: ", helper.correlation(f1, y))
 # print("Correlation between Feature_2 and Target_y: ", helper.correlation(f2, y))
@@ -120,6 +177,12 @@ from sklearn.preprocessing import PolynomialFeatures
 # # its best if can input fprime manually, then check with approximation, scalar function seems to be fine
 # print(helper.gradientDescentApprox(lambda cd:cd[0]**5 + (cd[1]**2) * np.sin(cd[1]), (2, 3), learning_rate, num_iters, smallStep=1e-1)[0])
 # print(helper.gradientDescentApprox(lambda cd:cd[0]**5 + (cd[1]**2) * np.sin(cd[1]), (2, 3), learning_rate, num_iters, smallStep=1e-1)[1])
+
+# learning_rate = 0.2
+# num_iters = 1
+
+# print(helper.gradientDescent(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, lambda cd:(2*cd[0] + cd[1]**2, 2*cd[0]*cd[1]), (3, 2), learning_rate, num_iters)[0])
+# print(helper.gradientDescent(lambda cd:cd[0]**2 + cd[0]*cd[1]**2, lambda cd:(2*cd[0] + cd[1]**2, 2*cd[0]*cd[1]), (3, 2), learning_rate, num_iters)[1])
 
 ''' Example for tree classifier '''
 # from sklearn.datasets import load_iris

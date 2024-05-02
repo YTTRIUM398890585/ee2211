@@ -410,3 +410,11 @@ def treeClassifier(X_train, X_test, y_train, y_test, criterion, max_depth):
     
     # tree decision is given with respect to X[feature index]
     # a plot of the tree with [class 0, class 1, class 2, ...] as the amount in each class
+    
+def customMSE(arr):
+    x = np.array(arr)
+    
+    mse = mean_squared_error(x, np.mean(x)*np.ones(len(x)))
+    print("[customMSE] MSE= ", mse)    
+    
+    return mse

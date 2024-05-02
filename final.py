@@ -13,6 +13,19 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 from sklearn.preprocessing import PolynomialFeatures
 
+''' Example of finding MSE '''
+# y1 = np.array([2.1, 1.5, 5.8, 6.1])
+# y2 = np.array([9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+# y = np.array([2.1, 1.5, 5.8, 6.1, 9.1, 9.5, 9.8, 12.7, 13.8, 15.9])
+
+# print("overall depth 1", (mean_squared_error(y1, np.mean(y1)*np.ones(len(y1))) * len(y1) + mean_squared_error(y2, np.mean(y2)*np.ones(len(y2))) * len(y2))/len(y))
+
+# helper.customMSE(y)
+# y1MSE = helper.customMSE(y1)
+# y2MSE = helper.customMSE(y2)
+# print("overall depth 1", (y1MSE * len(y1) + y2MSE * len(y2))/len(y))
+
+
 ''' Example for linear regression with biasing and polynomial regression '''
 # X = np.array([[-10], [-8], [-3], [-1], [2], [8]])
 # Y = np.array([[5], [5], [4], [3], [2], [2]])
