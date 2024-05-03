@@ -338,8 +338,9 @@ def gradientDescent(f, f_prime, initial, learning_rate, num_iters):
         steps = np.vstack((steps, new_step))
         
     flist = np.array([f(i) for i in steps])
+    fprimeList = np.array([f_prime(i) for i in steps])
 
-    return steps, flist
+    return steps, flist, fprimeList
 
 def treeRegressor(X_train, X_test, y_train, y_test, criterion, max_depth):
     '''

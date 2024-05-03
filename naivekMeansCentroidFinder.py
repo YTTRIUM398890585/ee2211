@@ -35,6 +35,15 @@ centers = np.array([x, y])
 # # Initial centers
 # centers = np.array([[10], [15], [20]])
 
+''' Q 34'''
+# Data points
+data_points = np.array([[10.0], [11.0], [14.0], [16.0], [16.0], [18.0], [18.0], [21.0], [21.0]])
+
+# Initial centers
+centers = np.array([[10], [16], [21]])
+
+ 
+
 """ random 2D data points and centers for testing the k-means algorithm """
 # # Set three centers , the model should predict similar results
 # center_1 = np.array([2, 2])

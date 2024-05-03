@@ -62,6 +62,18 @@ from sklearn.preprocessing import PolynomialFeatures
 # print("Correlation between Feature_2 and Target_y: ", helper.correlation(f2, y))
 # print("Correlation between Feature_3 and Target_y: ", helper.correlation(f3, y))
 
+'''Q9'''
+f1 = np.array([-0.709, 1.7255, 0.9539, -0.7581, -1.035, -1.049])
+f2 = np.array([2.8719, 1.5014, 1.8365, -0.5467, 1.8274, 0.3501])
+f3 = np.array([-1.8349, 0.4055, 1.0118, 0.5171, 0.7279, 1.2654])
+f4 = np.array([2.6354, 2.7448, 1.4616, 0.7258, -1.6893, -1.7512])
+y = np.array([0.8206, 1.0639, 0.6895, -0.0252, 0.995, 0.6608])
+
+print("Correlation between Feature_1 and Target_y: ", helper.correlation(f1, y))
+print("Correlation between Feature_2 and Target_y: ", helper.correlation(f2, y))
+print("Correlation between Feature_3 and Target_y: ", helper.correlation(f3, y))
+print("Correlation between Feature_4 and Target_y: ", helper.correlation(f4, y))
+
 ''' Example for polynomial regression with ridge and dual method'''
 # # training data
 # X_train = np.array([-10, -8, -3, -1, 2, 7]).reshape((-1, 1))
@@ -122,6 +134,24 @@ from sklearn.preprocessing import PolynomialFeatures
 
 # print(helper.gradientDescentApprox(lambda a:a**4, 2.5, learning_rate, num_iters)[0])
 # print(helper.gradientDescentApprox(lambda a:a**4, 2.5, learning_rate, num_iters)[1])
+
+''' Q22 '''
+
+# learning_rate = 0.1
+# num_iters = 5
+
+# print(helper.gradientDescent(lambda a:np.sin(np.exp(a))**3, lambda a:3*np.cos(np.exp(a))*np.exp(a)*np.sin(np.exp(a))**2, 3, learning_rate, num_iters)[0])
+# print(helper.gradientDescent(lambda a:np.sin(np.exp(a))**3, lambda a:3*np.cos(np.exp(a))*np.exp(a)*np.sin(np.exp(a))**2, 3, learning_rate, num_iters)[1])
+# print(helper.gradientDescent(lambda a:np.sin(np.exp(a))**3, lambda a:3*np.cos(np.exp(a))*np.exp(a)*np.sin(np.exp(a))**2, 3, learning_rate, num_iters)[2])
+
+
+'''Q29'''
+# learning_rate = 0.03
+# num_iters = 5
+
+# print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[0])
+# print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[1])
+
 
 # print(helper.gradientDescentApprox(lambda b:np.sin(b)**2, 0.6, learning_rate, num_iters)[0])
 # print(helper.gradientDescentApprox(lambda b:np.sin(b)**2, 0.6, learning_rate, num_iters)[1])

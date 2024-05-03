@@ -17,6 +17,9 @@ W3 = W2
 
 F2 = sigmoid(onesToLeft(sigmoid(onesToLeft(sigmoid(X*W1, 1))*W2, 1))*W3, 1)
 
+A = [-1 2 -3; 4 -5 6]
+F3 = signum(A)
+
 function Y = relu(X)
     Y = max(0, X);
 end
@@ -24,6 +27,10 @@ end
 % The ./ operator performs element-wise division
 function Y = sigmoid(X, beta)
     Y = 1.0 ./ (1.0 + exp(-X*beta));
+end
+
+function y = signum(x)
+    y = sign(x);
 end
 
 function Y = onesToLeft(X)
