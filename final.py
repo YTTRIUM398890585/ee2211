@@ -146,12 +146,16 @@ print("Correlation between Feature_4 and Target_y: ", helper.correlation(f4, y))
 
 
 '''Q29'''
-# learning_rate = 0.03
-# num_iters = 5
+learning_rate = 0.03
+num_iters = 5
 
-# print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[0])
-# print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[1])
+print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[0])
+print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[1])
+print(helper.gradientDescent(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], lambda xyz:(2*xyz[0]*xyz[1] + xyz[1]*xyz[2], xyz[0]**2 + 3*xyz[1]**2 + xyz[0]*xyz[2], xyz[0]*xyz[1]), (2, 6, -3), learning_rate, num_iters)[2])
 
+print(helper.gradientDescentApprox(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], (2, 6, -3), learning_rate, num_iters, smallStep=1e-6)[0])
+print(helper.gradientDescentApprox(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], (2, 6, -3), learning_rate, num_iters, smallStep=1e-6)[1])
+print(helper.gradientDescentApprox(lambda xyz:xyz[1]*xyz[0]**2 + xyz[1]**3 + xyz[0]*xyz[1]*xyz[2], (2, 6, -3), learning_rate, num_iters, smallStep=1e-6)[2])
 
 # print(helper.gradientDescentApprox(lambda b:np.sin(b)**2, 0.6, learning_rate, num_iters)[0])
 # print(helper.gradientDescentApprox(lambda b:np.sin(b)**2, 0.6, learning_rate, num_iters)[1])
